@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -8,83 +9,101 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 
-// Chart data
 const data = [
-  { name: "JAN", value: 700 },
-  { name: "FEB", value: 450 },
-  { name: "MAR", value: 520 },
-  { name: "APR", value: 470 },
-  { name: "MAY", value: 620 },
-  { name: "JUN", value: 830 },
-  { name: "JUL", value: 650 },
-  { name: "AUG", value: 560 },
-  { name: "SEP", value: 410 },
-  { name: "OCT", value: 690 },
-  { name: "NOV", value: 340 },
-  { name: "DEC", value: 600 },
+  { name: "JAN", long: 700, short: 500 },
+  { name: "FEB", long: 450, short: 300 },
+  { name: "MAR", long: 520, short: 400 },
+  { name: "APR", long: 470, short: 350 },
+  { name: "MAY", long: 620, short: 480 },
+  { name: "JUN", long: 830, short: 600 },
+  { name: "JUL", long: 650, short: 500 },
+  { name: "AUG", long: 560, short: 420 },
+  { name: "SEP", long: 410, short: 300 },
+  { name: "OCT", long: 690, short: 550 },
+  { name: "NOV", long: 340, short: 220 },
+  { name: "DEC", long: 600, short: 430 },
 ];
-
-const highlightIndex = 5; // JUN
 
 const filters = [
-  { label: "Robin Hood", color: "bg-orange-100 text-orange-600" },
-  { label: "Almetrade", color: "bg-blue-100 text-blue-600" },
-  { label: "Fidelity", color: "bg-green-100 text-green-600" },
-  { label: "Charles", color: "bg-purple-100 text-purple-600" },
+  { label: "Robin Hood", activeIndex: 6 },
+  { label: "Almetrade", activeIndex: 3 },
+  { label: "Fidelity", activeIndex: 9 },
+  { label: "Charles", activeIndex: 0 },
 ];
 
-const MonthlyBarChart = () => (
-  <div className="bg-white rounded-2xl shadow-md p-6 w-full mt-6">
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
-      <h2 className="text-xl font-bold text-gray-800">Overview</h2>
-      <div className="flex flex-wrap gap-2">
-        {filters.map((filter) => (
-          <span
-            key={filter.label}
-            className={`px-3 py-1 rounded-full text-sm font-medium ${filter.color}`}
-          >
-            {filter.label}
-          </span>
-        ))}
-      </div>
-    </div>
+const MonthlyBarChart = () => {
+  const [activeFilter, setActiveFilter] = useState(filters[0]);
 
-    <ResponsiveContainer width="100%" height={280}>
-      <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        <XAxis
-          dataKey="name"
-          tickLine={false}
-          axisLine={false}
-          className="text-sm text-gray-500"
-        />
-        <YAxis
-          tickLine={false}
-          axisLine={false}
-          className="text-sm text-gray-500"
-        />
-        <Tooltip
-          contentStyle={{ fontSize: "14px", borderRadius: "8px" }}
-          labelStyle={{ color: "#6B7280" }}
-        />
-        <Bar
-          dataKey="value"
-          radius={[4, 4, 0, 0]}
-          fill="#FBBF24"
-          barSize={28}
-        >
-          {data.map((entry, index) => (
-            <cell
-              key={`cell-${index}`}
-              fill={index === highlightIndex ? "#F59E0B" : "#E5E7EB"}
-            />
+  return (
+    <div className="bg-white rounded-2xl shadow-md p-6 w-full mt-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
+        <h2 className="text-xl font-bold text-gray-800">Overview</h2>
+        <div className="flex flex-wrap gap-2">
+          {filters.map((filter) => (
+            <button
+              key={filter.label}
+              onClick={() => setActiveFilter(filter)}
+              className={`px-4 py-1 rounded-2xl text-sm font-medium transition-colors duration-200 ${
+                filter.label === activeFilter.label
+                  ? "bg-[#FF8600] text-white"
+                  : "bg-[#f6f6f6] text-gray-700"
+              }`}
+            >
+              {filter.label}
+            </button>
           ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
-  </div>
-);
+        </div>
+      </div>
+
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={data} barCategoryGap={16}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis
+            dataKey="name"
+            tickLine={false}
+            axisLine={false}
+            className="text-sm text-gray-500"
+          />
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            className="text-sm text-gray-500"
+          />
+          <Tooltip
+            contentStyle={{ fontSize: "14px", borderRadius: "8px" }}
+            labelStyle={{ color: "#6B7280" }}
+          />
+          <Bar dataKey="long" radius={[4, 4, 0, 0]} barSize={14}>
+            {data.map((_, index) => (
+              <Cell
+                key={`long-${index}`}
+                fill={
+                  index === activeFilter.activeIndex
+                    ? "#FF8600"
+                    : "#F1F1F2"
+                }
+              />
+            ))}
+          </Bar>
+          <Bar dataKey="short" radius={[4, 4, 0, 0]} barSize={14}>
+            {data.map((_, index) => (
+              <Cell
+                key={`short-${index}`}
+                fill={
+                  index === activeFilter.activeIndex
+                    ? "#FFB800"
+                    : "#E6E6E7"
+                }
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 export default MonthlyBarChart;
