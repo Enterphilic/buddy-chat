@@ -1,18 +1,35 @@
 'use client';
 
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+
+// Same navItems from Sidebar for consistency
+const navItems = [
+  { label: 'My Portfolio', href: '/portfolio' },
+  { label: 'My Group', href: '/group' },
+  { label: 'Messages', href: '/messages' },
+  { label: 'Analytics', href: '/analytics' },
+  { label: 'Pack', href: '/pack' },
+  { label: 'Settings', href: '/settings' },
+];
 
 const Navbar = () => {
+  const pathname = usePathname();
+
+  // Find active page name based on pathname
+  const activeItem = navItems.find((item) => pathname.includes(item.href));
+  const activeTitle = activeItem ? activeItem.label : 'Dashboard';
+
   return (
-    <div className="w-full px-4 py-8 flex flex-wrap items-center justify-between">
-      {/* Left side - Title (hidden on small screens) */}
+    <div className="sticky top-0 z-40 bg-[#F7F8FA] px-4 py-6 flex flex-wrap items-center justify-between ">
+      {/* Left: Dynamic Title */}
       <div className="hidden sm:block w-1/2 text-lg md:text-2xl font-bold text-gray-800">
-        My Portfolio
+        {activeTitle}
       </div>
 
-      {/* Right side */}
+      {/* Right: Icons and Search */}
       <div className="w-full sm:w-1/2 flex items-center justify-end gap-2 sm:flex-wrap">
-        {/* Full Search Bar - visible on sm and up */}
+        {/* Full Search Bar */}
         <div className="hidden sm:flex items-center bg-white px-3 py-2 rounded-xl shadow-sm border border-gray-200 flex-grow max-w-[400px]">
           <Image src="/search-icon.jpg" alt="Search" width={16} height={16} />
           <input
@@ -22,7 +39,7 @@ const Navbar = () => {
           />
         </div>
 
-        {/* Mobile: Search Icon */}
+        {/* Mobile Search Icon */}
         <div className="sm:hidden w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border border-gray-200">
           <Image src="/search-icon.jpg" alt="Search" width={18} height={18} />
         </div>
