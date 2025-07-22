@@ -102,7 +102,11 @@ const SignupForm = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
 
   const isComplete =
     form.firstName.trim() &&
@@ -114,6 +118,15 @@ const SignupForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isComplete) return;
+
+    if (!passwordRegex.test(form.password)) {
+      setPasswordError(
+        "Password must include uppercase, lowercase, number, and special character."
+      );
+      return;
+    } else {
+      setPasswordError("");
+    }
 
     try {
       setLoading(true);
@@ -131,10 +144,10 @@ const SignupForm = () => {
       } else {
         console.log("Signup failed");
       }
-   } catch (err) {
-  const error = err as AxiosError<{ message?: string }>;
-  console.log(error.response?.data?.message || "Registration failed");
-} finally {
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
+      console.log(error.response?.data?.message || "Registration failed");
+    } finally {
       setLoading(false);
     }
   };
@@ -215,6 +228,9 @@ const SignupForm = () => {
         <p className="absolute right-3 bottom-[-20px] text-xs text-[#84919A]">
           {form.password.length}/15
         </p>
+        {passwordError && (
+          <p className="text-red-500 text-xs mt-2">{passwordError}</p>
+        )}
       </div>
 
       <button
