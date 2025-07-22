@@ -14,18 +14,13 @@ const ChatArea = () => {
   const [input, setInput] = useState('');
   const chatRef = useRef<HTMLDivElement>(null);
 
-  // Load messages from localStorage on mount
+  // Clear chat on mount (don't load from localStorage)
   useEffect(() => {
-    const stored = localStorage.getItem('chat-messages');
-    if (stored) {
-      setMessages(JSON.parse(stored));
-    }
+    setMessages([]);
   }, []);
 
-  // Save messages to localStorage
+  // Auto-scroll when messages update
   useEffect(() => {
-    localStorage.setItem('chat-messages', JSON.stringify(messages));
-    // Auto-scroll
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
