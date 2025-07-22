@@ -1,11 +1,11 @@
 
-
+import Login from "./(auth)/login/page";
 
 export default function Home() {
   return (
-    <div className="bg-red-600 font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    
       
-      hello world
-    </div>
+      <Login/>
+   
   );
 }
