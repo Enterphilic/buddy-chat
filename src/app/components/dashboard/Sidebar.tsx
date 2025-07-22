@@ -77,7 +77,7 @@ export default function Sidebar() {
             onClick={handleLogout}
             className="w-full bg-orange-100 text-orange-500 flex items-center justify-center gap-2 text-sm px-3 py-2 rounded-xl cursor-pointer hover:bg-orange-200 transition"
           >
-            <Image src="/logout.png" alt="Logout" width={16} height={16} />
+            <Image src="/logout.png" alt="logout" width={16} height={16} />
             <span className="hidden lg:inline">Logout</span>
           </div>
         </div>

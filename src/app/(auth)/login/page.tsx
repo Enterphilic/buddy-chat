@@ -77,16 +77,16 @@ const SignupForm = () => {
 
     setLoading(true);
     try {
-      console.log('here 2')
+      console.log ('incorrect email or password')
       const res = await loginUser(form);
      console.log ("Login successful!");
-     console.log('here 3')
+     console.log ('here 3')
       router.push("/portfolio");
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log(error.message);
+        alert(error.message);
       } else {
-        console.log("An unknown error occurred.");
+        alert("An unknown error occurred.");
       }
     } finally {
       setLoading(false);
