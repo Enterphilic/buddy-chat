@@ -1,50 +1,70 @@
 "use client";
 
-import AuthLayout from "../signup/AuthLayout";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import OtpInput from "react-otp-input";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+
+import AuthLayout from "../signup/AuthLayout";
+// import { verifyOtp, resendOtp } from "@/lib/api";
 
 const VerifyEmail = () => {
   const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState("");
+  const router = useRouter();
 
-  const handleChange = (value: string) => {
+  // useEffect(() => {
+  //   const storedEmail = localStorage.getItem("email");
+  //   if (storedEmail) {
+  //     setEmail(storedEmail);
+  //   } else {
+  //     toast.error("No email found. Please register again.");
+  //     router.push("/signup");
+  //   }
+  // }, []);
+
+  function handleChange(value: string) {
     if (/^\d*$/.test(value)) {
       setOtp(value);
     }
-  };
+  }
 
-  const handleSubmit = () => {
+  function handleSubmit() {
     if (otp.length !== 4) {
       toast.error("Please enter a 4-digit OTP code");
       return;
     }
 
-    toast.success(`Entered OTP is ${otp}`);
-    // Add your API logic here
-  };
+    const testOtp = "1234";
 
-  const handleResend = () => {
-    toast.info("OTP resent to seyi@zojatech.com");
-    // Add resend logic here
-  };
+    if (otp === testOtp) {
+      toast.success("OTP verified successfully (simulated)!");
+      localStorage.setItem("token", "fake-jwt-token-123");
+      router.push("/confirmed");
+    } else {
+      toast.error("Invalid OTP. Use 1234 for testing.");
+    }
+  }
+
+  function handleResend() {
+    toast.success(`Simulated: OTP resent to ${email}. Use 1234.`);
+  }
 
   return (
     <div className="flex min-h-screen">
       {/* Left Section */}
-      <AuthLayout />
+      {/* <AuthLayout /> */}
 
       {/* Right Section */}
       <div className="flex flex-1 justify-center flex-col items-center gap-14 bg-[#f8fafc] px-6">
-        <div className="bg-[white] p-8 rounded-2xl shadow-md w-full max-w-md text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Verify your email
-          </h2>
+        <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify your email</h2>
           <p className="text-sm text-gray-600">
             A four digit OTP code has been sent to your email
           </p>
-          <p className="text-orange-500 font-medium mb-6">seyi@zojatech.com</p>
+          <p className="text-orange-500 font-medium mb-6">{email}</p>
 
           <OtpInput
             value={otp}
@@ -55,7 +75,7 @@ const VerifyEmail = () => {
             renderInput={(props) => (
               <input
                 {...props}
-                className="w-[60px] h-[60px] border-2 border-orange-400 rounded-md text-2xl text-center focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-[60px] h-[30px] border-2 border-orange-400 rounded-md text-2xl text-center focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             )}
           />
@@ -80,7 +100,6 @@ const VerifyEmail = () => {
         </div>
       </div>
 
-      {/* Toast Container */}
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );

@@ -1,8 +1,21 @@
+'use client'
+import { useEffect } from "react";
+
 // components/SignupLeftSection.tsx
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const AuthLayout = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      // router.push("/verify-otp");
+    }
+  }, [])
+
   return (
     <div className="hidden lg:flex w-1/2 flex-col justify-between items-start px-20 py-10 bg-[white]">
       <Image

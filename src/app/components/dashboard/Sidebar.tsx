@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+
 
 const navItems = [
   { label: 'My Portfolio', icon: '/portfolio.jpg', href: '/portfolio' },
@@ -15,9 +16,17 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  function handleLogout() {
+   
+    localStorage.removeItem('token');
+  router.push('/login');
+    
+  }
 
   return (
-    <div className=" h-screen mt-4 bg-white px-2 py-4 flex flex-col justify-between shadow-md">
+    <div className="h-screen mt-4 bg-white px-2 py-4 flex flex-col justify-between shadow-md">
       {/* Logo */}
       <Link href="/" className="flex items-center justify-center gap-2 lg:justify-start px-4 mb-3">
         <Image src="/logo.jpg" alt="logo" width={32} height={32} />
@@ -62,12 +71,15 @@ export default function Sidebar() {
           />
           <div className="hidden lg:block text-sm font-semibold text-gray-800 mt-4">Theresa Milly</div>
           <div className="hidden lg:block text-xs text-gray-400 mb-3">Influencer</div>
-          <Link href="/logout">
-            <div className="w-full bg-orange-100 text-orange-500 flex items-center justify-center gap-2 text-sm px-3 py-2 rounded-xl cursor-pointer">
-              <Image src="/logout.png" alt="Logout" width={16} height={16} />
-              <span className="hidden lg:inline">Logout</span>
-            </div>
-          </Link>
+          
+          {/* Logout Button */}
+          <div
+            onClick={handleLogout}
+            className="w-full bg-orange-100 text-orange-500 flex items-center justify-center gap-2 text-sm px-3 py-2 rounded-xl cursor-pointer hover:bg-orange-200 transition"
+          >
+            <Image src="/logout.png" alt="Logout" width={16} height={16} />
+            <span className="hidden lg:inline">Logout</span>
+          </div>
         </div>
       </div>
     </div>

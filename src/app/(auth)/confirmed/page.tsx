@@ -3,8 +3,11 @@
 import React from "react";
 import AuthLayout from "../signup/AuthLayout";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; 
 
 const EmailConfirmed = () => {
+  const router = useRouter(); 
+
   return (
     <div className="flex min-h-screen">
       {/* Left Section */}
@@ -23,19 +26,20 @@ const EmailConfirmed = () => {
             />
 
             <h2 className="text-xl font-semibold text-[#1D1D18] mb-3">
-              Email verified !
+              Email verified!
             </h2>
 
             <p className="text-[#5B6871] text-sm mb-6 leading-relaxed">
               The verified email address will be associated with your account.
-              Click on the button below to continue
+              Click on the button below to continue.
             </p>
 
-            <button className="bg-[#FF8600] text-white font-semibold py-2 px-4 w-[45%] rounded-md hover:bg-orange-500 transition hover:cursor-pointer">
-             Continue
+            <button
+              onClick={() => router.push("/login")}
+              className="bg-[#FF8600] text-white font-semibold py-2 px-4 w-[45%] rounded-md hover:bg-orange-500 transition hover:cursor-pointer"
+            >
+              Continue
             </button>
-
-           
           </div>
         </div>
       </div>
