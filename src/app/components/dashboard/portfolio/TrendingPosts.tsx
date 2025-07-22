@@ -34,7 +34,7 @@ const TrendingPosts = () => (
           </div>
           <div className="flex gap-4 mt-auto">
             <span className="flex items-center gap-1 text-gray-600 text-sm rounded-2xl px-2 py-1 bg-gray-50">
-              <Image src="/heart.png" alt="Like" width={16} height={16} />
+              <Image src="/loveicon.png" alt="Like" width={16} height={16} />
               {post.reactions.like}
             </span>
             <span className="flex items-center gap-1 text-gray-600 text-sm rounded-2xl px-2 py-1 bg-gray-50">
